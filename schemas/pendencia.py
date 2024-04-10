@@ -62,6 +62,7 @@ def apresenta_pendencia(pendencia: Pendencia):
     """ Retorna uma representação da pendencia seguindo o schema definido em
         PendenciaViewSchema.
     """
+    print("passei na apresentação pendencia")
     return {
         "id": pendencia.id,
         "autor": pendencia.autor,

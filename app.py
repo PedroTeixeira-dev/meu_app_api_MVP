@@ -17,14 +17,11 @@ CORS(app)
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
 pendencia_tag = Tag(name="Pendencia", description="Adição, visualização e remoção de pendencias à base")
 
-
-
 @app.get('/', tags=[home_tag])
 def home():
     """Redireciona para /openapi, tela que permite a escolha do estilo de documentação.
     """
     return redirect('/openapi')
-
 
 @app.post('/pendencia', tags=[pendencia_tag],
           responses={"200": PendenciaViewSchema, "409": ErrorSchema, "400": ErrorSchema})
@@ -33,6 +30,7 @@ def add_pendencia(form: PendenciaSchema):
 
     Retorna uma representação das pendencias.
     """
+    print("passando os dados da pendencia")
     pendencia = Pendencia(
         autor=form.autor,
         titulo=form.titulo,
@@ -40,6 +38,7 @@ def add_pendencia(form: PendenciaSchema):
         descricao=form.descricao,
         status=form.status
         )
+    print("saindo da model")
     logger.debug(f"Adicionando pendencia de nome: '{pendencia.titulo}'")
     try:
         # criando conexão com a base

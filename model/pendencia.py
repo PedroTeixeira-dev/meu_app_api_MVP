@@ -1,18 +1,20 @@
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, DateTime, Uuid
 from datetime import datetime
 from typing import Union
+
+import uuid
 
 from  model import Base
 
 class Pendencia(Base):
     __tablename__ = 'Pendencia'
 
-    id = Column("pk_pendencia", Integer, primary_key=True)
-    autor = Column(String(140), unique=False)
+    id = Column("pk_pendencia", Uuid, primary_key=True, default=uuid.uuid4)
+    autor = Column(String(140))
     titulo = Column(String(140), unique=True)
-    equipamento = Column(String(140), unique=True)
-    descricao = Column(String(280), unique=True)
-    status = Column(String(140), unique=False)
+    equipamento = Column(String(140))
+    descricao = Column(String(280))
+    status = Column(String(140))
     data_insercao = Column(DateTime, default=datetime.now())
 
 
@@ -29,6 +31,8 @@ class Pendencia(Base):
             status: status que a pendência se encontra
             data_insercao: data de quando o pendencia foi inserido à base
         """
+        print("dentro da model da pendencia")
+
         self.autor = autor
         self.titulo = titulo
         self.equipamento = equipamento
