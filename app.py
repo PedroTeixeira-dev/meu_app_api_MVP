@@ -15,7 +15,7 @@ CORS(app)
 
 # definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
-pendencia_tag = Tag(name="Pendencia", description="Adição, visualização e remoção de pendencias à base")
+pendencia_tag = Tag(name="Pendencia", description="Adição, visualização, edição e remoção de pendencias à base")
 
 @app.get('/', tags=[home_tag])
 def home():
@@ -136,4 +136,35 @@ def del_produto(query: PendenciaBuscaSchema):
         error_msg = "pendencia não encontrado na base :/"
         logger.warning(f"Erro ao deletar pendenica #'{pendencia_titulo}', {error_msg}")
         return {"mesage": error_msg}, 404
+    
+@app.put('/pendencia', tags=[pendencia_tag],
+         responses={"200": PendenciaViewSchema, "404": ErrorSchema})
+def update_status(query: PendenciaAtualizaSchema):
+    """Atualiza o status de uma pendencia existente pelo nome.
+
+    Retorna uma representação da pendencia atualizada.
+    """
+    pendencia_titulo = query.nome
+    pendencia_status = query.status
+    logger.debug(f"Atualizando status da pendencia '{pendencia_titulo}'")
+
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca pela pendencia pelo nome
+    pendencia = session.query(Pendencia).filter(Pendencia.titulo == pendencia_titulo).first()
+
+    if not pendencia:
+        # se a pendencia não foi encontrada
+        error_msg = "Pendencia não encontrada na base :/"
+        logger.warning(f"Erro ao atualizar status da pendencia '{pendencia_titulo}', {error_msg}")
+        return {"mesage": error_msg}, 404
+    else:
+        # atualiza o status da pendencia
+        pendencia.status = pendencia_status
+        session.commit()
+
+        logger.debug(f"Status da pendencia '{pendencia_titulo}' atualizado para '{pendencia.status}'")
+        # retorna a representação da pendencia atualizada
+        return apresenta_pendencia(pendencia), 200
+
 

@@ -18,6 +18,13 @@ class PendenciaBuscaSchema(BaseModel):
     """
     nome: str = "Teste"
 
+class PendenciaAtualizaSchema(BaseModel):
+    """ Define como deve ser a estrutura que representa a atualizacão de uma pendência. Que será
+        feita apenas com base no nome da pendencia.
+    """
+    nome: str = "Teste"
+    status: str = "Em andamento"
+
 
 class ListagemPendenciasSchema(BaseModel):
     """ Define como uma listagem de pendencias será retornada.
