@@ -30,7 +30,6 @@ def add_pendencia(form: PendenciaSchema):
 
     Retorna uma representação das pendencias.
     """
-    print("passando os dados da pendencia")
     pendencia = Pendencia(
         autor=form.autor,
         titulo=form.titulo,
@@ -38,7 +37,6 @@ def add_pendencia(form: PendenciaSchema):
         descricao=form.descricao,
         status=form.status
         )
-    print("saindo da model")
     logger.debug(f"Adicionando pendencia de nome: '{pendencia.titulo}'")
     try:
         # criando conexão com a base
@@ -82,7 +80,6 @@ def get_pendencias():
     else:
         logger.debug(f"%d rodutos econtrados" % len(pendencias))
         # retorna a representação de produto
-        print(pendencias)
         return apresenta_pendencias(pendencias), 200
 
 
@@ -119,7 +116,6 @@ def del_produto(query: PendenciaBuscaSchema):
     Retorna uma mensagem de confirmação da remoção.
     """
     pendencia_titulo = unquote(unquote(query.nome))
-    print(pendencia_titulo)
     logger.debug(f"Deletando dados sobre produto #{pendencia_titulo}")
     # criando conexão com a base
     session = Session()
